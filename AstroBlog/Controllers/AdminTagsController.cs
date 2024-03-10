@@ -1,16 +1,16 @@
-﻿using AstroBlog.Data;
-using AstroBlog.Models.Domain;
+﻿using AstroBlog.Models.Domain;
 using AstroBlog.Models.ViewModel;
+using AstroBlog.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AstroBlog.Controllers
 {
     public class AdminTagsController : Controller
     {
-        private readonly AstroBlogDbContext astroBlogDbContext;
-        public AdminTagsController(AstroBlogDbContext astroBlogDbContext) 
+        private readonly ITagRepository tagRepository;
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            this.astroBlogDbContext = astroBlogDbContext;
+            this.tagRepository = tagRepository;
         }
 
 
@@ -21,7 +21,7 @@ namespace AstroBlog.Controllers
         }
         [HttpPost]
         [ActionName("Add")]
-        public IActionResult Add(AddTagRequest addTagrequest)
+        public async Task<IActionResult> Add(AddTagRequest addTagrequest)
         {
             //maping addrequest to tag domain model
             var tag = new Tag
@@ -29,23 +29,22 @@ namespace AstroBlog.Controllers
                 Name = addTagrequest.Name,
                 DisplayName = addTagrequest.DisplayName,
             };
-            astroBlogDbContext.Tags.Add(tag);
-            astroBlogDbContext.SaveChanges();
-            return View("Add");
+            await tagRepository.AddAsync(tag);
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public IActionResult List() 
+        public async Task<IActionResult> List()
         {
             // use dbcontet to view list
-            var tags = astroBlogDbContext.Tags.ToList();
-            return View(tags);      
+            var tags = await  tagRepository.GetAllAsync();
+            return View(tags);
         }
 
         [HttpGet]
-        public IActionResult Edit(Guid id) 
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var tag = astroBlogDbContext.Tags.FirstOrDefault(t => t.Id == id);
+            var tag = await tagRepository.GetAsync(id);
             if (tag != null)
             {
                 var editTagRequest = new EditTagRequest
@@ -61,34 +60,32 @@ namespace AstroBlog.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EditTagRequest editTagrequest) 
+        public async Task<IActionResult> Edit(EditTagRequest editTagrequest)
         {
-            var tag = new Tag {Id= editTagrequest.Id, Name = editTagrequest.Name, DisplayName = editTagrequest.DisplayName };
-            var existingTag = astroBlogDbContext.Tags.Find(tag.Id);
-            if(existingTag != null)
-            {
-                existingTag.Name = tag.Name;
-                existingTag.DisplayName = tag.DisplayName;
-                astroBlogDbContext.SaveChanges();
-                //show success 
-                return RedirectToAction("Edit", new { id = editTagrequest.Id });
+            var tag = new Tag { Id = editTagrequest.Id, Name = editTagrequest.Name, DisplayName = editTagrequest.DisplayName };
+            var updatedTag = await tagRepository.UpdateAsync(tag);
 
+            if (updatedTag != null)
+            {
+                //show success success notification
+            }
+            else
+            {
+                //show error
             }
             //show error
-            return RedirectToAction("Edit", new {id = editTagrequest.Id });
+            return RedirectToAction("List", new { id = editTagrequest.Id });
         }
         [HttpPost]
-        public IActionResult Delete(EditTagRequest editTagrequest) 
+        public async Task<IActionResult> Delete(EditTagRequest editTagrequest)
         {
-            var tag = astroBlogDbContext.Tags.Find(editTagrequest.Id);
-            if (tag != null) 
+            var deletedTag = await tagRepository.DeleteAsync(editTagrequest.Id);
+            if (deletedTag != null)
             {
-                astroBlogDbContext.Tags.Remove(tag);
-                astroBlogDbContext.SaveChanges();
+                //show success notification
                 return RedirectToAction("List");
-
             }
-            return RedirectToAction("Edit", new {id = editTagrequest.Id});
+            return RedirectToAction("Edit", new { id = editTagrequest.Id });
         }
     }
 }

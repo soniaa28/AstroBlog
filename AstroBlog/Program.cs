@@ -1,4 +1,5 @@
 using AstroBlog.Data;
+using AstroBlog.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace AstroBlog
@@ -14,6 +15,8 @@ namespace AstroBlog
 
             builder.Services.AddDbContext<AstroBlogDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("AstroBlogConnectionString")));
+
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
 
             var app = builder.Build();
 
