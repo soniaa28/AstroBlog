@@ -1,5 +1,6 @@
 ﻿using AstroBlog.Data;
 using AstroBlog.Models.Domain;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
 namespace AstroBlog.Repositories
@@ -19,9 +20,16 @@ namespace AstroBlog.Repositories
            return blogPost;
         }
 
-        public Task<BlogPost?> DeleteAsync(Guid id)
+        public async Task<BlogPost?> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+           var existingBlog =  await astroBlogDbContext.BlogPosts.FindAsync(id);
+            if(existingBlog != null)
+            {
+                astroBlogDbContext.BlogPosts.Remove(existingBlog);
+                await astroBlogDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
@@ -29,14 +37,35 @@ namespace AstroBlog.Repositories
            return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).ToListAsync();
         }
 
-        public Task<BlogPost?> GetAsync(Guid id)
+        public async Task<BlogPost?> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+           return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x=>x.Id==id);
         }
 
-        public Task<BlogPost?> UpdateAsync(BlogPost blogPost)
+        public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            var existingBlog = await astroBlogDbContext.BlogPosts.Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+
+            if (existingBlog != null)
+            {
+                existingBlog.Id = blogPost.Id;
+                existingBlog.Heading = blogPost.Heading;
+                existingBlog.PageTitle = blogPost.PageTitle;
+                existingBlog.Content = blogPost.Content;
+                existingBlog.ShortDescription = blogPost.ShortDescription;
+                existingBlog.Author = blogPost.Author;
+                existingBlog.FeaturedImageUrl = blogPost.FeaturedImageUrl;
+                existingBlog.UrlHandle = blogPost.UrlHandle;
+                existingBlog.Visible = blogPost.Visible;
+                existingBlog.PublishedDate = blogPost.PublishedDate;
+                existingBlog.Tags = blogPost.Tags;
+
+                await astroBlogDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+
+            return null;
         }
     }
 }

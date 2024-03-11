@@ -74,5 +74,90 @@ namespace AstroBlog.Controllers
 
             return View(blogposts);
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            //Retrieve the result from the repo
+           var blogPost = await blogPostRepository.GetAsync(id);
+            var tags = await tagRepository.GetAllAsync();
+
+            if (blogPost != null) 
+            {
+                var model = new EditBlogPostRequest
+                {
+                    Id = blogPost.Id,
+                    Heading = blogPost.Heading,
+                    PageTitle = blogPost.PageTitle,
+                    Content = blogPost.Content,
+                    Author = blogPost.Author,
+                    FeaturedImageUrl = blogPost.FeaturedImageUrl,
+                    UrlHandle = blogPost.UrlHandle,
+                    ShortDescription = blogPost.ShortDescription,
+                    PublishedDate = blogPost.PublishedDate,
+                    Visible = blogPost.Visible,
+                    Tags = tags.Select(t => new SelectListItem
+                    {
+                        Text = t.Name,
+                        Value = t.Id.ToString()
+                    }),
+                    SelectedTags = blogPost.Tags.Select(x => x.Id.ToString()).ToArray()
+                };
+                return View(model);
+            }
+           
+            //pass data to view
+            return View(null);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
+        {
+            var blogPostDomainModel = new BlogPost
+            {
+                Id = editBlogPostRequest.Id,
+                Heading = editBlogPostRequest.Heading,
+                PageTitle = editBlogPostRequest.PageTitle,
+                Content = editBlogPostRequest.Content,
+                Author = editBlogPostRequest.Author,
+                FeaturedImageUrl = editBlogPostRequest.FeaturedImageUrl,
+                UrlHandle = editBlogPostRequest.UrlHandle,
+                ShortDescription = editBlogPostRequest.ShortDescription,
+                PublishedDate = editBlogPostRequest.PublishedDate,
+                Visible = editBlogPostRequest.Visible
+            };
+            var selectesTags = new List<Tag>();
+            foreach(var selectedTag in editBlogPostRequest.SelectedTags)
+            {
+                if(Guid.TryParse(selectedTag, out var tag))
+                {
+                    var foundTag = await tagRepository.GetAsync(tag);
+                    if (foundTag != null)
+                    {
+                        selectesTags.Add(foundTag);
+                    }
+                }
+            }
+            blogPostDomainModel.Tags = selectesTags;
+
+           var updatedBlog =  await blogPostRepository.UpdateAsync(blogPostDomainModel);
+           if(updatedBlog != null)
+            {
+                //show success 
+                return RedirectToAction("Edit");
+            }
+            return RedirectToAction("Edit");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            var deletedBlogPost = await blogPostRepository.DeleteAsync(editBlogPostRequest.Id);
+            if(deletedBlogPost != null)
+            {
+                return RedirectToAction("List");
+            }
+            //show error
+            return RedirectToAction("Edit", new {id = editBlogPostRequest.Id});
+        }
     }
 }
