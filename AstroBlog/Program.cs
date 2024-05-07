@@ -1,4 +1,6 @@
 using AstroBlog.Data;
+using AstroBlog.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AstroBlog
@@ -14,7 +16,22 @@ namespace AstroBlog
 
             builder.Services.AddDbContext<AstroBlogDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("AstroBlogConnectionString")));
+            builder.Services.AddDbContext<TheAuthDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("AstroBlogAuthDbConnectionString")));
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<TheAuthDbContext>();
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
 
+            });
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
+            builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
+            builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
+            builder.Services.AddScoped<IBlogPostLikesRepository, BlogPostLikesRepository>();
+            builder.Services.AddScoped<IBlogPostCommentRepository, BlogPostCommentRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -29,7 +46,7 @@ namespace AstroBlog
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
