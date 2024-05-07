@@ -1,6 +1,7 @@
 ﻿using AstroBlog.Models.Domain;
 using AstroBlog.Models.ViewModel;
 using AstroBlog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AstroBlog.Controllers
@@ -13,7 +14,7 @@ namespace AstroBlog.Controllers
             this.tagRepository = tagRepository;
         }
 
-
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public IActionResult Add()
         {

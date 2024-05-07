@@ -67,5 +67,10 @@ namespace AstroBlog.Repositories
 
             return null;
         }
+
+        public async Task<BlogPost?> GetByUrlHandleAsync(string urlhandle)
+        {
+            return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlhandle);
+        }
     }
 }
