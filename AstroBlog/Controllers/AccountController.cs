@@ -14,8 +14,8 @@ namespace AstroBlog.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-
-        public IActionResult Register()
+        [HttpGet]
+		public IActionResult Register()
         {
             return View();
         }
