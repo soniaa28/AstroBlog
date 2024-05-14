@@ -100,53 +100,59 @@
 
 <section class="w3l-courses py-5" id="courses">
     <div class="container py-lg-5 py-md-4 py-2">
-        <h5 class="sub-title text-center">Our Cooking Classes</h5>
-        <h3 class="title-style text-center">Popular Courses</h3>
+        <h5 class="sub-title text-center">Our blog</h5>
+        <h3 class="title-style text-center">Popular posts</h3>
         <div class="row justify-content-center">
-	        @if (Model != null && Model.BlogPosts.Any())
-	        {
-		        @for (int i = 0; i < Model.BlogPosts.Count(); i += 3)
-		        {
-			        <div class="row">
-				        @foreach (var post in Model.BlogPosts.Skip(i).Take(3))
-				        {
-					        <div class="col-lg-4 col-md-6 item mt-5">
-						        <div class="card">
-							        <div class="card-header p-0 position-relative">
-								        <a href="classes.html" class="zoom d-block">
-									        <img class="card-img-bottom d-block" src="@post.FeaturedImageUrl" alt="@post.Heading">
-								        </a>
-								        <div class="post-pos">
+            @if (Model != null && Model.BlogPosts.Any())
+            {
+                var sortedPosts = Model.BlogPosts.OrderByDescending(post => post.Likes.Count).ToList();
+
+                @for (int i = 0; i < sortedPosts.Count(); i += 3)
+                {
+                    <div class="row">
+                        @foreach (var post in sortedPosts.Skip(i).Take(3))
+                        {
+                            <div class="col-lg-4 col-md-6 item mt-5">
+                                <div class="card">
+                                    <div class="card-header p-0 position-relative">
+                                        <a href="classes.html" class="zoom d-block">
+                                            <img class="card-img-bottom d-block" src="@post.FeaturedImageUrl" alt="@post.Heading">
+                                        </a>
+                                        <div class="post-pos">
                                             @foreach (var tag in post.Tags)
                                             {
-	                                            <a href="classes.html" class="receipe blue">@tag.Name</a>
+                                                <a   asp-area=""
+                                                     asp-controller="Blogs"
+                                                     asp-action="BlogByTag"
+                                                     asp-route-id="@tag.Id"
+                                                     class="receipe blue">@tag.Name</a>
                                             }
-								        </div>
-							        </div>
-							        <div class="card-body course-details">
-								        <a href="classes.html" class="course-desc">
-									        @post.Heading
-								        </a>
-							        </div>
-							        <div class="d-flex justify-content-between align-items-center mt-2">
-								        <i class="bi bi-hand-thumbs-up"></i>
-								        <span class="like-count">@post.Likes.Count</span>
-								        <a class="btn btn-dark"
-								           asp-area=""
-								           asp-controller="Blogs"
-								           asp-action="Index"
-								           asp-route-urlHandle="@post.UrlHandle">Read More</a>
-							        </div>
-						        </div>
-					        </div>
-				        }
-			        </div>
-		        }
-	        }
+                                        </div>
+                                    </div>
+                                    <div class="card-body course-details">
+                                        <div class="d-flex justify-content-start align-items-center mt-2">
+                                            <i class="bi bi-hand-thumbs-up"></i>
+                                            <span class="like-count ms-1">@post.Likes.Count</span>
+                                        </div>
+                                        <a href="classes.html" class="course-desc mt-3 d-block text-start">
+                                            @post.Heading
+                                        </a>
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <a class="btn btn-dark"
+                                               asp-area=""
+                                               asp-controller="Blogs"
+                                               asp-action="Index"
+                                               asp-route-urlHandle="@post.UrlHandle">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
         </div>
-
-
-        </div>
+    </div>
         <!-- pagination -->
         <div class="pagination-wrapper mt-5 pt-lg-3 text-center">
             <ul class="page-pagination">

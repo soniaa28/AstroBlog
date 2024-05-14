@@ -72,5 +72,14 @@ namespace AstroBlog.Repositories
         {
             return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlhandle);
         }
+
+       
+        public async Task<List<BlogPost>> GetBlogsByTagIdAsync(Guid id)
+        {
+            return await astroBlogDbContext.BlogPosts
+                .Include(x => x.Tags)
+                .Where(x => x.Tags.Any(tag => tag.Id == id))
+                .ToListAsync();
+        }
     }
 }

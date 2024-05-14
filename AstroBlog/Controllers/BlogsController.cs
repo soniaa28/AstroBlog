@@ -97,5 +97,17 @@ namespace AstroBlog.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> BlogByTag(Guid id)
+        {
+            var blogposts = await blogPostRepository.GetBlogsByTagIdAsync(id);
+            foreach (var post in blogposts)
+            {
+                var totalLikes = await blogPostLikesRepository.GetLikesForBlogForUser(post.Id);
+                post.Likes = (ICollection<BlogPostLike>)totalLikes;
+            }
+            return View(blogposts);
+        }
     }
 }
