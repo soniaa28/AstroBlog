@@ -1,44 +1,46 @@
-﻿body {
-}
-.image-container{
+﻿.image-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.image-overlay {
-    position: relative;
-    margin: 10px;
-}
-
-    .image-overlay img {
-        width: 200px; /* Змініть розмір зображення за потреби */
-        height: auto;
+    .image-container img {
         transition: transform 0.3s ease;
+        height: auto;
     }
 
-.overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.5); /* Прозорий фон тексту */
-    padding: 10px;
-    border-radius: 5px;
-}
-
-    .overlay-text a {
-        color: #fff; /* Колір тексту */
-        text-decoration: none;
+        .image-container img:hover {
+            transform: scale(1.1); /* Збільшуємо зображення на 10% */
+        }
+    .image-container div {
+        margin: 10px; /* Проміжок між зображеннями */
     }
-
-.image-overlay:hover img {
-    transform: scale(1.1); /* Масштабувати зображення при наведенні */
+.image-title {
+    text-align: center;
+}
+.verysmall-image {
+    width: 55px;
+}
+.small-image {
+    width: 70px;
+}
+.smallmid-image {
+    width: 110px;
+}
+.medium-image {
+    width: 140px;
 }
 
-.image-overlay:hover .overlay-text {
-    opacity: 1; /* Показати текст при наведенні */
+.large-image {
+    width: 160px;
 }
-
-
+.sun-image {
+    width: 300px;
+}
+.solar {
+    margin-top: 50px;
+    
+}
