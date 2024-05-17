@@ -75,6 +75,14 @@ namespace AstroBlog.Controllers
             return View(blogposts);
         }
         [HttpGet]
+        public async Task<IActionResult> ListofMyBlogs()
+        {
+           
+            var blogposts = await blogPostRepository.GetAllAsync();
+
+            return View(blogposts);
+        }
+        [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             //Retrieve the result from the repo

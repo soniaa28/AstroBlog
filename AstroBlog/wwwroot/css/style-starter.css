@@ -19516,6 +19516,59 @@ h5.sub-title {
   margin-top: 15px;
 }
 
+.card {
+    height: 100%; 
+}
+
+.card-body.course-details {
+    max-height: 300px;  Встановіть бажану максимальну висоту 
+    overflow: hidden;
+}
+
+.comments-container {
+    border: 1px solid #ddd; /* Додайте потрібні стилі */
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.comments-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.comment-content {
+    padding: 10px;
+}
+.course-desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Встановіть бажану кількість рядків тексту */
+    -webkit-box-orient: vertical;
+}
+
+.btn-read-more {
+    margin-bottom: 10px; /* Відступ знизу для кнопки "Read More" */
+}
+
+.button-container {
+    margin-top: 10px; /* Відступ зверху для контейнера кнопок */
+}
+.post-date {
+    margin-left: auto;
+}
+
+
 .w3l-courses a.course-desc:hover {
   color: var(--primary-color);
 }

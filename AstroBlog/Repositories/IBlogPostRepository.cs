@@ -11,6 +11,7 @@ namespace AstroBlog.Repositories
         Task<BlogPost?> DeleteAsync(Guid id);
         Task<BlogPost?> GetByUrlHandleAsync(string urlhandle);
         Task<List<BlogPost>> GetBlogsByTagIdAsync(Guid id);
+        //Task<IEnumerable<BlogPost>> GetAllMyblogsAsync(Guid userid);
 
     }
 }

@@ -81,5 +81,10 @@ namespace AstroBlog.Repositories
                 .Where(x => x.Tags.Any(tag => tag.Id == id))
                 .ToListAsync();
         }
+
+        //public async Task<IEnumerable<BlogPost>> GetAllMyblogsAsync(Guid userid)
+        //{
+        //    return await astroBlogDbContext.BlogPosts.Where(x=>x.)Include(x => x.Tags).ToListAsync();
+        //}
     }
 }

@@ -42,5 +42,37 @@
 }
 .solar {
     margin-top: 50px;
-    
+    text-align: center;
+}
+.custom-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Рівномірний розподіл між елементами */
+}
+
+.custom-text {
+    flex: 0.7; /* Займе всю вільну ширину відстані між елементами */
+    max-width: calc(50% - 100px); /* Максимальна ширина текстового блоку */
+    padding: 120px;
+}
+
+    .custom-text h3 {
+        color: #ca0a74;
+        margin-bottom: 40px; /* Збільшений відступ між заголовком та текстом */
+    }
+
+.custom-image {
+    flex: 1;
+    padding: 20px;
+}
+
+    .custom-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+
+.solar h3 {
+    color: #ca0a74;
 }
