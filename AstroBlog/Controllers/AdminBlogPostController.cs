@@ -4,18 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AstroBlog.Models.Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace AstroBlog.Controllers
 {
     public class AdminBlogPostController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ITagRepository tagRepository;
         public IBlogPostRepository blogPostRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IBlogPostLikesRepository _blogpostlikerepository;
 
-        public AdminBlogPostController(ITagRepository tagRepository, IBlogPostRepository blogPostRepository)
+        public AdminBlogPostController(UserManager<IdentityUser> userManager, ITagRepository tagRepository, IBlogPostRepository blogPostRepository, IUserRepository userRepository , IBlogPostLikesRepository blogpostlikerepository )
         {
+            _userManager = userManager;
             this.tagRepository = tagRepository;
             this.blogPostRepository = blogPostRepository;
+            _userRepository = userRepository;
+            _blogpostlikerepository = blogpostlikerepository;
         }
 
        
@@ -35,7 +42,8 @@ namespace AstroBlog.Controllers
         public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
         {
             //map view model to domain model
-
+            var curuserId = _userManager.GetUserId(User);
+            var curuser = await _userRepository.GetAsync(Guid.Parse(curuserId));
             var blogPost = new BlogPost
             {
                 Heading = addBlogPostRequest.Heading,
@@ -47,6 +55,8 @@ namespace AstroBlog.Controllers
                 PublishedDate = addBlogPostRequest.PublishedDate,
                 Author = addBlogPostRequest.Author,
                 Visible = addBlogPostRequest.Visible,
+                OwnerId = curuser.Id
+                
                
             };
             var selectedTags = new List<Tag>();
@@ -77,9 +87,13 @@ namespace AstroBlog.Controllers
         [HttpGet]
         public async Task<IActionResult> ListofMyBlogs()
         {
-           
-            var blogposts = await blogPostRepository.GetAllAsync();
-
+            var curuserId = _userManager.GetUserId(User);
+            var blogposts = await blogPostRepository.GetAllMyblogsAsync(Guid.Parse(curuserId));
+            foreach (var post in blogposts)
+            {
+                var totalLikes = await _blogpostlikerepository.GetLikesForBlogForUser(post.Id);
+                post.Likes = (ICollection<BlogPostLike>)totalLikes;
+            }
             return View(blogposts);
         }
         [HttpGet]

@@ -4,6 +4,7 @@ using AstroBlog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AstroBlog.Migrations
 {
     [DbContext(typeof(AstroBlogDbContext))]
-    partial class AstroBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240517164513_person")]
+    partial class person
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +156,12 @@ namespace AstroBlog.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PersonId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Tags");
                 });
@@ -171,21 +179,6 @@ namespace AstroBlog.Migrations
                     b.HasIndex("TagsId");
 
                     b.ToTable("BlogPostTag");
-                });
-
-            modelBuilder.Entity("PersonTag", b =>
-                {
-                    b.Property<Guid>("PersonsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PersonsId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("PersonTag");
                 });
 
             modelBuilder.Entity("AstroBlog.Models.Domain.BlogPost", b =>
@@ -213,26 +206,18 @@ namespace AstroBlog.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AstroBlog.Models.Domain.Tag", b =>
+                {
+                    b.HasOne("AstroBlog.Models.Domain.Person", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("PersonId");
+                });
+
             modelBuilder.Entity("BlogPostTag", b =>
                 {
                     b.HasOne("AstroBlog.Models.Domain.BlogPost", null)
                         .WithMany()
                         .HasForeignKey("BlogPostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AstroBlog.Models.Domain.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PersonTag", b =>
-                {
-                    b.HasOne("AstroBlog.Models.Domain.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PersonsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -253,6 +238,8 @@ namespace AstroBlog.Migrations
             modelBuilder.Entity("AstroBlog.Models.Domain.Person", b =>
                 {
                     b.Navigation("BlogPosts");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

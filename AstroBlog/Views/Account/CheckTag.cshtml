@@ -1,0 +1,114 @@
+﻿@model AstroBlog.Models.ViewModel.UserViewModel
+
+@{
+    ViewData["Title"] = "CheckTag";
+    Layout = "~/Views/Shared/_Layouttest.cshtml";
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+<div class="checktag-container">
+    <div class="checktag-form">
+        <h2>Select Tags</h2>
+        <form asp-action="CheckTag" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="input-box">
+                <label class="form-label">Tags</label>
+                <div class="tag-list d-flex flex-wrap justify-content-center">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <label class="tag" for="@($"tag-{tag.Value}")">@tag.Text<input type="checkbox" id="@($"tag-{tag.Value}")" name="SelectedTags" value="@tag.Value" hidden /></label>
+                    }
+                </div>
+            </div>
+            <div class="input-box button">
+                <input type="submit" value="Save" class="btn btn-dark">
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f2f5;
+    }
+
+    .checktag-container {
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .checktag-form {
+        padding: 50px 40px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .checktag-form h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+    .tag-list {
+        margin-bottom: 20px;
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+        .tag.selected {
+            background-color: #ca0a74;
+            color: #fff;
+        }
+
+    .btn-dark {
+        width: 100%;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Отримуємо всі мітки
+        const tags = document.querySelectorAll('.tag');
+
+        // Додаємо обробник подій для кожної мітки
+        tags.forEach(function (tag) {
+            tag.addEventListener('click', function (event) {
+                // Вимикаємо стандартну дію для кліка по чекбоксу
+                event.preventDefault();
+
+                // Отримуємо чекбокс, пов'язаний з тегом
+                const checkbox = tag.querySelector('input[type="checkbox"]');
+
+                // Тоглимо клас 'selected' на тезі та чекбоксі
+                tag.classList.toggle('selected');
+                checkbox.checked = !checkbox.checked;
+            });
+        });
+    });
+</script>
+

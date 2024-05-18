@@ -12,6 +12,6 @@ namespace AstroBlog.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogPostLike> Likes { get; set;}
         public DbSet<BlogPostComment> Comments { get; set; }
-
+        public DbSet<Person> People { get; set; }
     }
 }

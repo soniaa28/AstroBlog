@@ -22,8 +22,8 @@
 </section>
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
-
+        <div class="col-12 col-lg-10">
+            <!-- Збільшивши ширину до col-lg-8 -->
             @if (Model != null)
             {
                 <h1 class="mb-3">@Model.Heading</h1>
@@ -62,53 +62,50 @@
 
                 <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
 
-                <div class="mb-3 blog-details-content">
+                <!-- Збільшивши ширину контенту статті -->
+                <div class="mb-3 blog-details-content" style="width: 100%;">
                     @Html.Raw(Model.Content)
                 </div>
 
-
                 <div class="comments-container">
-	                <div class="comments-header">
-		                <h5>Comments</h5>
+                    <div class="comments-header">
+                        <h5>Comments</h5>
 
-		                @if (signInManager.IsSignedIn(User))
-		                {
-			                <form method="post">
-				                <div class="mb-3">
-					                <label class="form-label">Comment Description</label>
-					                <input type="text" class="form-control" asp-for="CommentDescription" />
-				                </div>
-				                <div class="mb-3">
-					                <button type="submit" class="btn btn-dark">Submit</button>
-					                <input type="hidden" asp-for="Id" />
-					                <input type="hidden" asp-for="UrlHandle" />
-				                </div>
-			                </form>
-		                }
-	                </div>
-	                <div class="comments-body">
-		                @if (Model.Comments != null && Model.Comments.Any())
-		                {
-			                @foreach (var comment in Model.Comments)
-			                {
-				                <div class="comment-item mb-3">
-					                <div class="comment-content">
-						                <div>
-							                @comment.Description
-						                </div>
-						                <div class="d-flex justify-content-between">
-							                <span class="text-secondary">@comment.Username</span>
-							                <span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
-						                </div>
-					                </div>
-				                </div>
-			                }
-		                }
-	                </div>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">Comment Description</label>
+                                    <input type="text" class="form-control" asp-for="CommentDescription" />
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                    <input type="hidden" asp-for="Id" />
+                                    <input type="hidden" asp-for="UrlHandle" />
+                                </div>
+                            </form>
+                        }
+                    </div>
+                    <div class="comments-body">
+                        @if (Model.Comments != null && Model.Comments.Any())
+                        {
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div class="comment-item mb-3">
+                                    <div class="comment-content">
+                                        <div>
+                                            @comment.Description
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-secondary">@comment.Username</span>
+                                            <span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
-
-
-
             }
             else
             {
@@ -117,6 +114,7 @@
         </div>
     </div>
 </div>
+
 
 
 @section Scripts {
@@ -160,3 +158,111 @@
 
     </script>
 }
+<style>
+    /* Стилі для внутрішнього банера */
+    .inner-banner {
+        background-color: #f8f9fa;
+        padding: 50px 0;
+    }
+
+    .inner-text-title {
+        font-size: 36px;
+        color: #333;
+    }
+
+    /* Стилі для заголовка статті */
+    .blog-title {
+        font-size: 28px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для автора та дати публікації */
+    .blog-meta {
+        font-size: 16px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для кнопки "Лайк" */
+    .like-button {
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+
+    /* Стилі для тегів */
+    .tag {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+
+    /* Стилі для картинки */
+    .featured-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для контенту статті */
+    .blog-content {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Стилі для коментарів */
+    .comments {
+        margin-top: 50px;
+    }
+
+    .comment-item {
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0;
+    }
+
+    .comment-content {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .comment-meta {
+        font-size: 14px;
+        color: #999;
+    }
+
+        .comment-meta span {
+            margin-right: 10px;
+        }
+
+    .comment-form {
+        margin-top: 30px;
+    }
+
+        .comment-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+            .comment-form button:hover {
+                background-color: #0056b3;
+            }
+
+</style>
