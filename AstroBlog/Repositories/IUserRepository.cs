@@ -8,6 +8,6 @@ namespace AstroBlog.Repositories
         Task<Person?> GetAsync(Guid id);
         Task<Person> AddAsync(Person person);
         Task<Person?> UpdateAsync(Person person);
-
+        Task<Person?> GetByNameAsync(string userName);
     }
 }

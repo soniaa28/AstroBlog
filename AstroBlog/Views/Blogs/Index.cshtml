@@ -21,101 +21,140 @@
 	</div>
 </section>
 <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10">
-            <!-- Збільшивши ширину до col-lg-8 -->
-            @if (Model != null)
-            {
-                <h1 class="mb-3">@Model.Heading</h1>
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-10">
+			<!-- Збільшивши ширину до col-lg-8 -->
+			@if (Model != null)
+			{
+				<h1 class="mb-3">@Model.Heading</h1>
 
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">@Model.Author</span>
-                    <span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
-                </div>
+				<div class="d-flex justify-content-between mb-3">
+					<a href="/Blogs/BlogbyPerson?username=@Model.UserName" class="custom-link"> by @Model.UserName</a>
+					<span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+				</div>
 
-                <div class="mb-3">
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        if (Model.Liked)
-                        {
-                            <a style="cursor: pointer;">
-                                <i class="bi bi-hand-thumbs-up-fill"></i>
-                            </a>
-                        }
-                        else
-                        {
-                            <a id="btnLike" style="cursor: pointer;">
-                                <i class="bi bi-hand-thumbs-up"></i>
-                            </a>
-                        }
-                    }
+				<div class="mb-3">
+					@if (signInManager.IsSignedIn(User))
+					{
+						@if (Model.Liked)
+						{
+							<a style="cursor: pointer;" class="liked-icon">
+								<i class="bi bi-hand-thumbs-up-fill"></i>
+							</a>
+						}
+						else
+						{
+							<a id="btnLike" style="cursor: pointer;" class="like-icon">
+								<i class="bi bi-hand-thumbs-up"></i>
+							</a>
+						}
+					}
 
-                    <span id="totalLikes">@Model.TotalLikes</span> likes
-                </div>
+					<span id="totalLikes">@Model.TotalLikes</span> likes
+				</div>
 
-                <div class="mb-3 d-flex">
-                    @foreach (var tag in Model.Tags)
-                    {
-                        <span class="badge bg-secondary me-1">@tag.Name</span>
-                    }
-                </div>
+				<div class="mb-3 d-flex">
+					@foreach (var tag in Model.Tags)
+					{
+						<span class="badge bg-secondary me-1">@tag.Name</span>
+					}
+				</div>
 
-                <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
+				<img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
 
-                <!-- Збільшивши ширину контенту статті -->
-                <div class="mb-3 blog-details-content" style="width: 100%;">
-                    @Html.Raw(Model.Content)
-                </div>
+				<!-- Збільшивши ширину контенту статті -->
+				<div class="mb-3 blog-details-content" style="width: 100%;">
+					@Html.Raw(Model.Content)
+				</div>
 
-                <div class="comments-container">
-                    <div class="comments-header">
-                        <h5>Comments</h5>
+				<div class="comments-container">
+					<div class="comments-header">
+						<h5>Comments</h5>
 
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            <form method="post">
-                                <div class="mb-3">
-                                    <label class="form-label">Comment Description</label>
-                                    <input type="text" class="form-control" asp-for="CommentDescription" />
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-dark">Submit</button>
-                                    <input type="hidden" asp-for="Id" />
-                                    <input type="hidden" asp-for="UrlHandle" />
-                                </div>
-                            </form>
-                        }
-                    </div>
-                    <div class="comments-body">
-                        @if (Model.Comments != null && Model.Comments.Any())
-                        {
-                            @foreach (var comment in Model.Comments)
-                            {
-                                <div class="comment-item mb-3">
-                                    <div class="comment-content">
-                                        <div>
-                                            @comment.Description
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span class="text-secondary">@comment.Username</span>
-                                            <span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>
-                </div>
-            }
-            else
-            {
-                <p>Blog post not found!</p>
-            }
-        </div>
-    </div>
+						@if (signInManager.IsSignedIn(User))
+						{
+							<form method="post">
+								<div class="mb-3">
+									<label class="form-label">Comment Description</label>
+									<input type="text" class="form-control" asp-for="CommentDescription" />
+								</div>
+								<div class="mb-3">
+									<button type="submit" class="btn custom-btn">Submit</button>
+									<input type="hidden" asp-for="Id" />
+									<input type="hidden" asp-for="UrlHandle" />
+								</div>
+							</form>
+						}
+					</div>
+					<div class="comments-body">
+						@if (Model.Comments != null && Model.Comments.Any())
+						{
+							@foreach (var comment in Model.Comments)
+							{
+								<div class="comment-item mb-3">
+									<div class="comment-content">
+										<div>
+											@comment.Description
+										</div>
+										<div class="d-flex justify-content-between">
+											<a href="/Blogs/BlogbyPerson?username=@comment.Username" class="custom-link" style="text-align: left;"> by @comment.Username</a>
+											<span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</div>
+			}
+			else
+			{
+				<p>Blog post not found!</p>
+			}
+		</div>
+	</div>
 </div>
+<style>
+    /* Задаємо колір для натиснутої кнопки like */
+    .liked-icon {
+        color: #ca0a74; /* Колір для позитивного натиснення */
+    }
 
+    /* Задаємо колір для ненатиснутої кнопки like */
+    .like-icon {
+        color:  #ca0a74; /* Колір за замовчуванням */
+    }
+</style>
 
+<style>
+    /* Style for the link */
+    .custom-link {
+        color: #343a40; /* Default text color */
+        text-decoration: none; /* Remove default underline */
+        transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+    }
+
+        /* Hover effect for the link */
+        .custom-link:hover {
+            color: #ca0a74; /* New text color on hover */
+            text-decoration: underline; /* Underline on hover */
+        }
+</style>
+<style>
+    .custom-btn {
+        background-color: #343a40; /* Default background color */
+        border-color: #343a40; /* Default border color */
+        color: white; /* Default text color */
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+        /* Hover effect for the button */
+        .custom-btn:hover {
+            background-color: #ca0a74; /* Pink background color on hover */
+            border-color: #ca0a74; /* Pink border color on hover */
+            color: white; /* White text color on hover */
+        }
+</style>
 
 @section Scripts {
     <script>

@@ -29,6 +29,10 @@ namespace AstroBlog.Repositories
         {
             return await astroBlogDbContext.People.Include(x => x.BlogPosts).Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
         }
+        public async Task<Person?> GetByNameAsync(string userName)
+        {
+            return await astroBlogDbContext.People.Include(x => x.BlogPosts).Include(x => x.Tags).FirstOrDefaultAsync(x => x.UserName == userName);
+        }
         public async Task<Person?> UpdateAsync(Person person)
         {
 	        var existingPerson = await astroBlogDbContext.People.Include(x => x.Tags).Include(x => x.BlogPosts)

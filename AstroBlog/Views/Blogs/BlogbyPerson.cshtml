@@ -1,10 +1,11 @@
 ﻿@model List<AstroBlog.Models.Domain.BlogPost>
 @{
-    ViewData["Title"] = "BlogByTag";
+    ViewData["Title"] = "BlogbyPerson";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <section class="inner-banner py-5">
-    <div class="w3l-breadcrumb py-lg-5 ">
+    <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-5 pb-sm-4 pb-2">
             <h4 class="inner-text-title font-weight-bold pt-5">Blog</h4>
             <ul class="breadcrumbs-custom-path">
@@ -16,7 +17,7 @@
 </section>
 <section class="w3l-courses py-5" id="courses">
     <div class="container py-lg-5 py-md-4 py-2">
-        <h3 class="title-style text-center">Our blog</h3>
+	    <h3 class="title-style text-center">Our blog</h3>
         <div class="row justify-content-center">
             @if (Model != null && Model.Any())
             {
@@ -46,9 +47,8 @@
                                             <span class="like-count ms-1">@post.Likes.Count</span>
                                         </div>
                                         <a href="classes.html" class="course-desc mt-3 d-block text-start">
-	                                        @post.Heading
+                                            @post.Heading
                                         </a>
-                                        <div class="course-desc">@post.ShortDescription</div>
                                         <div class="d-flex justify-content-center mt-3">
                                             <a class="btn btn-dark"
                                                asp-area=""
@@ -67,3 +67,4 @@
     </div>
 
 </section>
+

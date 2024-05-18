@@ -13,14 +13,16 @@ namespace AstroBlog.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IBlogPostCommentRepository _blogPostComment;
+        private readonly IUserRepository _userRepository;
 
-        public BlogsController(IBlogPostRepository blogPostRepository, IBlogPostLikesRepository blogPostLikesRepository , SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager,IBlogPostCommentRepository blogPostComment)
+        public BlogsController(IBlogPostRepository blogPostRepository, IBlogPostLikesRepository blogPostLikesRepository , SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager,IBlogPostCommentRepository blogPostComment, IUserRepository userRepository)
         {
             this.blogPostRepository = blogPostRepository;
             this.blogPostLikesRepository = blogPostLikesRepository;
             this.signInManager = signInManager;
             _userManager = userManager;
             _blogPostComment = blogPostComment;
+            _userRepository = userRepository;
         }
         [HttpGet]
         public async Task< IActionResult> Index(string urlHandle)
@@ -54,7 +56,8 @@ namespace AstroBlog.Controllers
                             Username = (await _userManager.FindByIdAsync(blogcomment.UserId.ToString())).UserName,
                         });
                     }
-                
+
+                    var blogpostOwner = await _userRepository.GetAsync(blogPost.OwnerId);
                blogpostlikeviewmodel = new BlogDetailsViewModel()
                {
                    Id = blogPost.Id,
@@ -70,7 +73,8 @@ namespace AstroBlog.Controllers
                    Tags = blogPost.Tags,
                    TotalLikes = totallikes,
                    Liked = liked,
-                   Comments = blogCommentForView
+                   Comments = blogCommentForView,
+                   UserName = blogpostOwner.UserName
 
                };
             }
@@ -102,6 +106,19 @@ namespace AstroBlog.Controllers
         public async Task<IActionResult> BlogByTag(Guid id)
         {
             var blogposts = await blogPostRepository.GetBlogsByTagIdAsync(id);
+            foreach (var post in blogposts)
+            {
+                var totalLikes = await blogPostLikesRepository.GetLikesForBlogForUser(post.Id);
+                post.Likes = (ICollection<BlogPostLike>)totalLikes;
+            }
+            return View(blogposts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BlogbyPerson(string userName)
+        {
+            var user = await _userRepository.GetByNameAsync(userName);
+            var blogposts = await blogPostRepository.GetBlogsByUserIdAsync(user.Id);
             foreach (var post in blogposts)
             {
                 var totalLikes = await blogPostLikesRepository.GetLikesForBlogForUser(post.Id);
