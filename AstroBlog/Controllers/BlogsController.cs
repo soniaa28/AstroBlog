@@ -43,7 +43,6 @@ namespace AstroBlog.Controllers
                         liked = likesfromuser != null;
                    }
                }
-
                var blogComments = await _blogPostComment.GetCommentsByBlogdAsync(blogPost.Id);
                var blogCommentForView = new List<BlogComment>();
                 
@@ -58,7 +57,7 @@ namespace AstroBlog.Controllers
                     }
 
                     var blogpostOwner = await _userRepository.GetAsync(blogPost.OwnerId);
-               blogpostlikeviewmodel = new BlogDetailsViewModel()
+                    blogpostlikeviewmodel = new BlogDetailsViewModel()
                {
                    Id = blogPost.Id,
                    Content = blogPost.Content,
@@ -75,11 +74,8 @@ namespace AstroBlog.Controllers
                    Liked = liked,
                    Comments = blogCommentForView,
                    UserName = blogpostOwner.UserName
-
                };
             }
-
-           
             return View(blogpostlikeviewmodel);
         }
 

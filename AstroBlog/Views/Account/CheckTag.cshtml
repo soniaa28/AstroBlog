@@ -9,11 +9,10 @@
 
 <div class="checktag-container">
     <div class="checktag-form">
-        <h2>Select Tags</h2>
+        <h2>What is interesting for you?</h2>
         <form asp-action="CheckTag" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="input-box">
-                <label class="form-label">Tags</label>
                 <div class="tag-list d-flex flex-wrap justify-content-center">
                     @foreach (var tag in Model.Tags)
                     {

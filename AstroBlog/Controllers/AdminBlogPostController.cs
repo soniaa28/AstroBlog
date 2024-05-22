@@ -56,8 +56,6 @@ namespace AstroBlog.Controllers
                 Author = addBlogPostRequest.Author,
                 Visible = addBlogPostRequest.Visible,
                 OwnerId = curuser.Id
-                
-               
             };
             var selectedTags = new List<Tag>();
             //map tags from selected tags 
@@ -101,8 +99,7 @@ namespace AstroBlog.Controllers
         {
             //Retrieve the result from the repo
            var blogPost = await blogPostRepository.GetAsync(id);
-            var tags = await tagRepository.GetAllAsync();
-
+           var tags = await tagRepository.GetAllAsync();
             if (blogPost != null) 
             {
                 var model = new EditBlogPostRequest
@@ -126,7 +123,6 @@ namespace AstroBlog.Controllers
                 };
                 return View(model);
             }
-           
             //pass data to view
             return View(null);
         }
@@ -160,9 +156,8 @@ namespace AstroBlog.Controllers
                 }
             }
             blogPostDomainModel.Tags = selectesTags;
-
-           var updatedBlog =  await blogPostRepository.UpdateAsync(blogPostDomainModel);
-           if(updatedBlog != null)
+            var updatedBlog =  await blogPostRepository.UpdateAsync(blogPostDomainModel);
+            if(updatedBlog != null)
             {
                 //show success 
                 return RedirectToAction("Edit");

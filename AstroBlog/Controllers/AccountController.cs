@@ -37,9 +37,7 @@ namespace AstroBlog.Controllers
                     UserName = registerViewModel.Username,
                     Email = registerViewModel.Email
                 };
-
                 var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
-
                 if (identityResult.Succeeded)
                 {
                     // assign this user the "User" role
@@ -50,9 +48,7 @@ namespace AstroBlog.Controllers
                         Id = Guid.Parse(identityUser.Id), Email = identityUser.Email, UserName = identityUser.UserName
                        
 					};
-                   
                     //mapping tags back to domain model
-                    
 					await _userRepository.AddAsync(person);
 
                     if (roleIdentityResult.Succeeded)
@@ -62,7 +58,6 @@ namespace AstroBlog.Controllers
                     }
                 }
             }
-
             // Show error notification
             return View();
         }
@@ -103,11 +98,6 @@ namespace AstroBlog.Controllers
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
-            //var model = new LoginViewModel
-            //{
-            //    ReturnUrl = ReturnUrl
-            //};
-
             return View();
         }
 
@@ -119,17 +109,13 @@ namespace AstroBlog.Controllers
             {
                 return View();
             }
-
             var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username,
                 loginViewModel.Password, false, false);
-
             if (signInResult != null && signInResult.Succeeded)
             {
                
                 return RedirectToAction("Index", "Home");
             }
-
-            // Show errors
             return View();
         }
 

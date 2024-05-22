@@ -88,7 +88,10 @@
 
 <div class="image-container">
 	<div>
-		<a href="#">
+		<a  asp-area=""
+		    asp-controller="Blogs"
+		    asp-action="Index"
+		    asp-route-urlHandle="article_sun">
             <img class="sun-image"  src="~/images/sun (1).png" alt="Image 1">
 			<div class="image-title">Sun</div>
 		</a>
@@ -100,7 +103,10 @@
 		</a>
 	</div>
 	<div>
-		<a href="#">
+        <a asp-area=""
+           asp-controller="Blogs"
+           asp-action="Index"
+           asp-route-urlHandle="article_venus">
             <img class="smallmid-image"  src="~/images/venus.png" alt="Image 2">
 			<div class="image-title">Venus</div>
 		</a>
