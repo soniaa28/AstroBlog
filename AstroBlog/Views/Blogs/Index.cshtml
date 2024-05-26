@@ -12,112 +12,149 @@
 <section class="inner-banner py-5">
 	<div class="w3l-breadcrumb py-lg-5">
 		<div class="container pt-5 pb-sm-4 pb-2">
-			<h4 class="inner-text-title font-weight-bold pt-5">Cooking Courses</h4>
+			<h4 class="inner-text-title font-weight-bold pt-5">Blogs</h4>
 			<ul class="breadcrumbs-custom-path">
 				<li><a href="index.html">Home</a></li>
-				<li class="active"><i class="fas fa-angle-right mx-2"></i>Classes</li>
+				<li class="active"><i class="fas fa-angle-right mx-2"></i>Blog</li>
 			</ul>
 		</div>
 	</div>
 </section>
 <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-10">
+			<!-- Збільшивши ширину до col-lg-8 -->
+			@if (Model != null)
+			{
+				<h1 class="mb-3">@Model.Heading</h1>
 
-            @if (Model != null)
-            {
-                <h1 class="mb-3">@Model.Heading</h1>
+				<div class="d-flex justify-content-between mb-3">
+					<a href="/Blogs/BlogbyPerson?username=@Model.UserName" class="custom-link"> by @Model.UserName</a>
+					<span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+				</div>
 
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">@Model.Author</span>
-                    <span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
-                </div>
+				<div class="mb-3">
+					@if (signInManager.IsSignedIn(User))
+					{
+						@if (Model.Liked)
+						{
+							<a style="cursor: pointer;" class="liked-icon">
+								<i class="bi bi-hand-thumbs-up-fill"></i>
+							</a>
+						}
+						else
+						{
+							<a id="btnLike" style="cursor: pointer;" class="like-icon">
+								<i class="bi bi-hand-thumbs-up"></i>
+							</a>
+						}
+					}
 
-                <div class="mb-3">
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        if (Model.Liked)
-                        {
-                            <a style="cursor: pointer;">
-                                <i class="bi bi-hand-thumbs-up-fill"></i>
-                            </a>
-                        }
-                        else
-                        {
-                            <a id="btnLike" style="cursor: pointer;">
-                                <i class="bi bi-hand-thumbs-up"></i>
-                            </a>
-                        }
-                    }
+					<span id="totalLikes">@Model.TotalLikes</span> likes
+				</div>
 
-                    <span id="totalLikes">@Model.TotalLikes</span> likes
-                </div>
+				<div class="mb-3 d-flex">
+					@foreach (var tag in Model.Tags)
+					{
+						<span class="badge bg-secondary me-1">@tag.Name</span>
+					}
+				</div>
 
-                <div class="mb-3 d-flex">
-                    @foreach (var tag in Model.Tags)
-                    {
-                        <span class="badge bg-secondary me-1">@tag.Name</span>
-                    }
-                </div>
+				<img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
 
-                <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
+				<!-- Збільшивши ширину контенту статті -->
+				<div class="mb-3 blog-details-content" style="width: 100%;">
+					@Html.Raw(Model.Content)
+				</div>
 
-                <div class="mb-3 blog-details-content">
-                    @Html.Raw(Model.Content)
-                </div>
+				<div class="comments-container">
+					<div class="comments-header">
+						<h5>Comments</h5>
 
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Comments</h5>
-
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            <form method="post">
-                                <div class="mb-3">
-                                    <label class="form-label">Comment Description</label>
-                                    <input type="text" class="form-control" asp-for="CommentDescription" />
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-dark">Submit</button>
-                                    <input type="hidden" asp-for="Id" />
-                                    <input type="hidden" asp-for="UrlHandle" />
-                                </div>
-                            </form>
-                        }
-                    </div>
-                    <div class="card-body">
-                        @if (Model.Comments != null && Model.Comments.Any())
-                        {
-                            @foreach (var comment in Model.Comments)
-                            {
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div>
-                                            @comment.Description
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span class="text-secondary">@comment.Username</span>
-                                            <span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>
-                </div>
-
-
-
-            }
-            else
-            {
-                <p>Blog post not found!</p>
-            }
-        </div>
-    </div>
+						@if (signInManager.IsSignedIn(User))
+						{
+							<form method="post">
+								<div class="mb-3">
+									<label class="form-label">Comment Description</label>
+									<input type="text" class="form-control" asp-for="CommentDescription" />
+								</div>
+								<div class="mb-3">
+									<button type="submit" class="btn custom-btn">Submit</button>
+									<input type="hidden" asp-for="Id" />
+									<input type="hidden" asp-for="UrlHandle" />
+								</div>
+							</form>
+						}
+					</div>
+					<div class="comments-body">
+						@if (Model.Comments != null && Model.Comments.Any())
+						{
+							@foreach (var comment in Model.Comments)
+							{
+								<div class="comment-item mb-3">
+									<div class="comment-content">
+										<div>
+											@comment.Description
+										</div>
+										<div class="d-flex justify-content-between">
+											<a href="/Blogs/BlogbyPerson?username=@comment.Username" class="custom-link" style="text-align: left;"> by @comment.Username</a>
+											<span class="text-secondary">@comment.DateAdded.ToShortDateString()</span>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</div>
+			}
+			else
+			{
+				<p>Blog post not found!</p>
+			}
+		</div>
+	</div>
 </div>
+<style>
+    /* Задаємо колір для натиснутої кнопки like */
+    .liked-icon {
+        color: #ca0a74; /* Колір для позитивного натиснення */
+    }
 
+    /* Задаємо колір для ненатиснутої кнопки like */
+    .like-icon {
+        color:  #ca0a74; /* Колір за замовчуванням */
+    }
+</style>
+
+<style>
+    /* Style for the link */
+    .custom-link {
+        color: #343a40; /* Default text color */
+        text-decoration: none; /* Remove default underline */
+        transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+    }
+
+        /* Hover effect for the link */
+        .custom-link:hover {
+            color: #ca0a74; /* New text color on hover */
+            text-decoration: underline; /* Underline on hover */
+        }
+</style>
+<style>
+    .custom-btn {
+        background-color: #343a40; /* Default background color */
+        border-color: #343a40; /* Default border color */
+        color: white; /* Default text color */
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+        /* Hover effect for the button */
+        .custom-btn:hover {
+            background-color: #ca0a74; /* Pink background color on hover */
+            border-color: #ca0a74; /* Pink border color on hover */
+            color: white; /* White text color on hover */
+        }
+</style>
 
 @section Scripts {
     <script>
@@ -160,3 +197,111 @@
 
     </script>
 }
+<style>
+    /* Стилі для внутрішнього банера */
+    .inner-banner {
+        background-color: #f8f9fa;
+        padding: 50px 0;
+    }
+
+    .inner-text-title {
+        font-size: 36px;
+        color: #333;
+    }
+
+    /* Стилі для заголовка статті */
+    .blog-title {
+        font-size: 28px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для автора та дати публікації */
+    .blog-meta {
+        font-size: 16px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для кнопки "Лайк" */
+    .like-button {
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+
+    /* Стилі для тегів */
+    .tag {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+
+    /* Стилі для картинки */
+    .featured-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі для контенту статті */
+    .blog-content {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Стилі для коментарів */
+    .comments {
+        margin-top: 50px;
+    }
+
+    .comment-item {
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0;
+    }
+
+    .comment-content {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .comment-meta {
+        font-size: 14px;
+        color: #999;
+    }
+
+        .comment-meta span {
+            margin-right: 10px;
+        }
+
+    .comment-form {
+        margin-top: 30px;
+    }
+
+        .comment-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+            .comment-form button:hover {
+                background-color: #0056b3;
+            }
+
+</style>

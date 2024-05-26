@@ -21,6 +21,7 @@ namespace AstroBlog.Models.ViewModel
         public bool Liked { get; set; }
         public string CommentDescription { get; set; }
 
+        public string? UserName { get; set; }
         public IEnumerable<BlogComment> Comments { get; set; }
     }
 }

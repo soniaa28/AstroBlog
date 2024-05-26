@@ -16,81 +16,112 @@
     </div>
 </section>
 <div class="container py-5">
-    <form method="post">
+	<form method="post">
 
-        <div class="mb-3">
-            <label class="form-label">Heading</label>
-            <input type="text" class="form-control" id="heading" asp-for="Heading" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Page Title</label>
-            <input type="text" class="form-control" id="pageTitle" asp-for="PageTitle" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Heading</label>
+			<input type="text" class="form-control" id="heading" asp-for="Heading" />
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Page Title</label>
+			<input type="text" class="form-control" id="pageTitle" asp-for="PageTitle" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" id="content" asp-for="Content"></textarea>
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Content</label>
+			<textarea class="form-control" id="content" asp-for="Content"></textarea>
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Short Description</label>
-            <input type="text" class="form-control" id="shortDescription" asp-for="ShortDescription" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Short Description</label>
+			<input type="text" class="form-control" id="shortDescription" asp-for="ShortDescription" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Featured Image Upload</label>
-            <input type="file" id="featuredImageUpload" class="form-control" />
+		<div class="mb-3">
+			<label class="form-label">Featured Image Upload</label>
+			<input type="file" id="featuredImageUpload" class="form-control" />
 
-            <img src="" id="featuredImageDisplay" style="display:none;width: 300px;" />
-        </div>
+			<img src="" id="featuredImageDisplay" style="display:none;width: 300px;" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Featured Image URL</label>
-            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Featured Image URL</label>
+			<input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">URL Handle</label>
+			<input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Published Date</label>
-            <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Published Date</label>
+			<input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" asp-for="Author" />
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Author</label>
+			<input type="text" class="form-control" id="author" asp-for="Author" />
+		</div>
 
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
-            <label class="form-check-label">
-                Is Visible?
-            </label>
-        </div>
+		<div class="form-check mb-3">
+			<input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
+			<label class="form-check-label">
+				Is Visible?
+			</label>
+		</div>
 
-        <div class="mb-3">
-            <label class="form-label">Tags</label>
-            <select class="form-select"
-                    asp-items="@Model.Tags"
-                    asp-for="SelectedTags">
-            </select>
-        </div>
-
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-dark">
-                Save
-            </button>
-        </div>
+		<div class="mb-3">
+			<label class="form-label">Tags</label>
+			<div class="tag-list">
+				@foreach (var tag in Model.Tags)
+				{
+					<label class="tag" for="@($"tag-{tag.Value}")">@tag.Text</label>
+					<input type="checkbox" id="@($"tag-{tag.Value}")" name="SelectedTags" value="@tag.Value" hidden />
+				}
+			</div>
+		</div>
 
 
-    </form>
+
+
+
+		<div class="mb-3">
+			<button type="submit" class="btn btn-dark">
+				Save
+			</button>
+		</div>
+
+
+	</form>
 </div>
+<style>
+	/* Стилізація текстових міток тегів */
+	.tag-list {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.tag {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 5px;
+		background-color: #f0f0f0;
+		border: 1px solid #ccc;
+		border-radius: 20px;
+		cursor: pointer;
+	}
+
+		/* Зміна кольору текстової мітки при виборі */
+		.tag.selected {
+			background-color: #ca0a74; /* Ваш колір */
+			color: #fff; /* Колір тексту на вибраній мітці */
+		}
+</style>
+
+
 @section Scripts {
-    <script>
+	<script>
         var editor = new FroalaEditor('#content', {
             imageUploadURL: '/api/images'
         });
@@ -125,5 +156,26 @@
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
 
     </script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// Отримуємо всі мітки
+			const tags = document.querySelectorAll('.tag');
+
+			// Додаємо обробник подій для кожної мітки
+			tags.forEach(function (tag) {
+				tag.addEventListener('click', function () {
+					// Перевіряємо, чи вибрано мітку
+					if (tag.classList.contains('selected')) {
+						// Видаляємо клас 'selected', якщо мітка вже вибрана
+						tag.classList.remove('selected');
+					} else {
+						// Додаємо клас 'selected', якщо мітка не вибрана
+						tag.classList.add('selected');
+					}
+				});
+			});
+		});
+	</script>
+
 }
 

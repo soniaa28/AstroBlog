@@ -4,6 +4,7 @@ using AstroBlog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AstroBlog.Migrations
 {
     [DbContext(typeof(AstroBlogDbContext))]
-    partial class AstroBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240515063249_add-coment-reply")]
+    partial class addcomentreply
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,15 +47,9 @@ namespace AstroBlog.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PageTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("PersonId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
@@ -69,8 +66,6 @@ namespace AstroBlog.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("BlogPosts");
                 });
@@ -120,23 +115,33 @@ namespace AstroBlog.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("AstroBlog.Models.Domain.Person", b =>
+            modelBuilder.Entity("AstroBlog.Models.Domain.CommentReply", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
+                    b.Property<Guid>("BlogPostCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlogPostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.HasIndex("BlogPostId");
+
+                    b.ToTable("CommentsReply");
                 });
 
             modelBuilder.Entity("AstroBlog.Models.Domain.Tag", b =>
@@ -173,28 +178,6 @@ namespace AstroBlog.Migrations
                     b.ToTable("BlogPostTag");
                 });
 
-            modelBuilder.Entity("PersonTag", b =>
-                {
-                    b.Property<Guid>("PersonsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PersonsId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("PersonTag");
-                });
-
-            modelBuilder.Entity("AstroBlog.Models.Domain.BlogPost", b =>
-                {
-                    b.HasOne("AstroBlog.Models.Domain.Person", null)
-                        .WithMany("BlogPosts")
-                        .HasForeignKey("PersonId");
-                });
-
             modelBuilder.Entity("AstroBlog.Models.Domain.BlogPostComment", b =>
                 {
                     b.HasOne("AstroBlog.Models.Domain.BlogPost", null)
@@ -208,6 +191,15 @@ namespace AstroBlog.Migrations
                 {
                     b.HasOne("AstroBlog.Models.Domain.BlogPost", null)
                         .WithMany("Likes")
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AstroBlog.Models.Domain.CommentReply", b =>
+                {
+                    b.HasOne("AstroBlog.Models.Domain.BlogPost", null)
+                        .WithMany("CommentsReplies")
                         .HasForeignKey("BlogPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -228,31 +220,13 @@ namespace AstroBlog.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersonTag", b =>
-                {
-                    b.HasOne("AstroBlog.Models.Domain.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PersonsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AstroBlog.Models.Domain.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AstroBlog.Models.Domain.BlogPost", b =>
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Likes");
-                });
+                    b.Navigation("CommentsReplies");
 
-            modelBuilder.Entity("AstroBlog.Models.Domain.Person", b =>
-                {
-                    b.Navigation("BlogPosts");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

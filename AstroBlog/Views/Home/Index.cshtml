@@ -1,4 +1,6 @@
 ﻿@model AstroBlog.Models.ViewModel.HomeViewModel
+@using System.Globalization
+
 
 @{
     ViewData["Title"] = "Home Page";
@@ -80,22 +82,84 @@
         </div>
     </div>
 </div> *@
-<div class="image-container">
-	<div class="image-overlay">
-		<img src="/images/banner1.jpg" alt="Image 1">
-		<div class="overlay-text">
-			<a href="#">Link 1</a>
-		</div>
-	</div>
-	<div class="image-overlay">
-        <img src="/images/banner2.jpg" alt="Image 2">
-		<div class="overlay-text">
-			<a href="#">Link 2</a>
-		</div>
-	</div>
-	<!-- Додайте більше зображень та тексту за потреби -->
+<div class="solar">
+    <h3 class ="title-style text-center">Know more about Solar system</h3>
 </div>
 
+<div class="image-container">
+	<div>
+		<a  asp-area=""
+		    asp-controller="Blogs"
+		    asp-action="Index"
+		    asp-route-urlHandle="article_sun">
+            <img class="sun-image"  src="~/images/sun (1).png" alt="Image 1">
+			<div class="image-title">Sun</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="verysmall-image" src="~/images/mercury.png" alt="Image 2">
+			<div class="image-title">Mercury</div>
+		</a>
+	</div>
+	<div>
+        <a asp-area=""
+           asp-controller="Blogs"
+           asp-action="Index"
+           asp-route-urlHandle="article_venus">
+            <img class="smallmid-image"  src="~/images/venus.png" alt="Image 2">
+			<div class="image-title">Venus</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class ="medium-image" src="~/images/planet-earth.png" alt="Image 2">
+			<div class="image-title">Earth</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="small-image"  src="~/images/mars.png" alt="Image 2">
+			<div class="image-title">Mars</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+			<img class="large-image" src="~/images/jupiter.png" alt="Image 2">
+			<div class="image-title">Jupiter</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+			<img class="large-image" src="~/images/saturn.png" alt="Image 2">
+			<div class="image-title">Saturn</div>
+		</a>
+	</div>
+
+	<div>
+		<a href="#">
+            <img class="smallmid-image" src="~/images/uranus.png" alt="Image 2">
+			<div class="image-title">Uranus</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="small-image" src="~/images/neptune.png" alt="Image 2">
+			<div class="image-title">Neptune</div>
+		</a>
+	</div>
+	
+	<!-- Додайте більше зображень тут -->
+</div>
+<div class="custom-container">
+	<div class="custom-text">
+		<h3 class="title-style text-center">ExploreSpace News & Blogs</h3>
+        <p>This an information site dedicated to space. It offers a wide selection of news, interesting facts, analysis and blogs about space events and discoveries. Discover the exciting world of space exploration, discovery and future missions through our articles and information materials.This an information site dedicated to space. It offers a wide selection of news, interesting facts, analysis and blogs about space events and discoveries. Discover the exciting world of space exploration, discovery and future missions through our articles and information materials</p>
+	</div>
+	<div class="custom-image">
+		<img src="~/images/imghome.png" alt="Ваше зображення">
+	</div>
+</div>
 
 
 <section class="w3l-courses py-5" id="courses">
@@ -121,11 +185,11 @@
                                         <div class="post-pos">
                                             @foreach (var tag in post.Tags)
                                             {
-                                                <a   asp-area=""
-                                                     asp-controller="Blogs"
-                                                     asp-action="BlogByTag"
-                                                     asp-route-id="@tag.Id"
-                                                     class="receipe blue">@tag.Name</a>
+                                                <a asp-area=""
+                                                   asp-controller="Blogs"
+                                                   asp-action="BlogByTag"
+                                                   asp-route-id="@tag.Id"
+                                                   class="receipe blue">@tag.Name</a>
                                             }
                                         </div>
                                     </div>
@@ -133,17 +197,22 @@
                                         <div class="d-flex justify-content-start align-items-center mt-2">
                                             <i class="bi bi-hand-thumbs-up"></i>
                                             <span class="like-count ms-1">@post.Likes.Count</span>
+                                            <span class="author-name ms-1"> by @post.Author</span>
+                                            <span class="post-date ms-3 ms-auto">
+	                                            @post.PublishedDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))
+                                            </span>
                                         </div>
                                         <a href="classes.html" class="course-desc mt-3 d-block text-start">
                                             @post.Heading
                                         </a>
-                                        <div class="d-flex justify-content-center mt-3">
-                                            <a class="btn btn-dark"
-                                               asp-area=""
-                                               asp-controller="Blogs"
-                                               asp-action="Index"
-                                               asp-route-urlHandle="@post.UrlHandle">Read More</a>
-                                        </div>
+                                        <div class="course-desc">@post.ShortDescription</div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <a class="btn btn-dark btn-read-more"
+                                           asp-area=""
+                                           asp-controller="Blogs"
+                                           asp-action="Index"
+                                           asp-route-urlHandle="@post.UrlHandle">Read More</a>
                                     </div>
                                 </div>
                             </div>
@@ -153,6 +222,9 @@
             }
         </div>
     </div>
+
+
+
         <!-- pagination -->
         <div class="pagination-wrapper mt-5 pt-lg-3 text-center">
             <ul class="page-pagination">

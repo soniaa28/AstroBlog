@@ -1,44 +1,78 @@
-﻿body {
-}
-.image-container{
+﻿.image-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.image-overlay {
-    position: relative;
-    margin: 10px;
-}
-
-    .image-overlay img {
-        width: 200px; /* Змініть розмір зображення за потреби */
-        height: auto;
+    .image-container img {
         transition: transform 0.3s ease;
+        height: auto;
     }
 
-.overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.5); /* Прозорий фон тексту */
-    padding: 10px;
-    border-radius: 5px;
+        .image-container img:hover {
+            transform: scale(1.1); /* Збільшуємо зображення на 10% */
+        }
+    .image-container div {
+        margin: 10px; /* Проміжок між зображеннями */
+    }
+.image-title {
+    text-align: center;
+}
+.verysmall-image {
+    width: 55px;
+}
+.small-image {
+    width: 70px;
+}
+.smallmid-image {
+    width: 110px;
+}
+.medium-image {
+    width: 140px;
 }
 
-    .overlay-text a {
-        color: #fff; /* Колір тексту */
-        text-decoration: none;
+.large-image {
+    width: 160px;
+}
+.sun-image {
+    width: 300px;
+}
+.solar {
+    margin-top: 50px;
+    text-align: center;
+}
+.custom-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Рівномірний розподіл між елементами */
+}
+
+.custom-text {
+    flex: 0.7; /* Займе всю вільну ширину відстані між елементами */
+    max-width: calc(50% - 100px); /* Максимальна ширина текстового блоку */
+    padding: 120px;
+}
+
+    .custom-text h3 {
+        color: #ca0a74;
+        margin-bottom: 40px; /* Збільшений відступ між заголовком та текстом */
     }
 
-.image-overlay:hover img {
-    transform: scale(1.1); /* Масштабувати зображення при наведенні */
+.custom-image {
+    flex: 1;
+    padding: 20px;
 }
 
-.image-overlay:hover .overlay-text {
-    opacity: 1; /* Показати текст при наведенні */
+    .custom-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+
+.solar h3 {
+    color: #ca0a74;
 }
-
-
