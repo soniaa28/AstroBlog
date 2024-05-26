@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AstroBlog.Controllers
 {
-    public class AdminBlogPostController : Controller
+    public class BlogPostController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITagRepository tagRepository;
@@ -16,7 +16,7 @@ namespace AstroBlog.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IBlogPostLikesRepository _blogpostlikerepository;
 
-        public AdminBlogPostController(UserManager<IdentityUser> userManager, ITagRepository tagRepository, IBlogPostRepository blogPostRepository, IUserRepository userRepository , IBlogPostLikesRepository blogpostlikerepository )
+        public BlogPostController(UserManager<IdentityUser> userManager, ITagRepository tagRepository, IBlogPostRepository blogPostRepository, IUserRepository userRepository , IBlogPostLikesRepository blogpostlikerepository )
         {
             _userManager = userManager;
             this.tagRepository = tagRepository;

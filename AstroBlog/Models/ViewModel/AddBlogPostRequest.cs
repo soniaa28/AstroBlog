@@ -17,7 +17,6 @@ namespace AstroBlog.Models.ViewModel
 
         //display tags to dropdown
         public IEnumerable<SelectListItem> Tags { get; set; }
-        //Collect Tag
         public string[] SelectedTags { get; set; } = Array.Empty<string>();
     }
 }
