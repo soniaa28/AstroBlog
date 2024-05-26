@@ -1,0 +1,78 @@
+﻿.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+    .image-container img {
+        transition: transform 0.3s ease;
+        height: auto;
+    }
+
+        .image-container img:hover {
+            transform: scale(1.1); /* Збільшуємо зображення на 10% */
+        }
+    .image-container div {
+        margin: 10px; /* Проміжок між зображеннями */
+    }
+.image-title {
+    text-align: center;
+}
+.verysmall-image {
+    width: 55px;
+}
+.small-image {
+    width: 70px;
+}
+.smallmid-image {
+    width: 110px;
+}
+.medium-image {
+    width: 140px;
+}
+
+.large-image {
+    width: 160px;
+}
+.sun-image {
+    width: 300px;
+}
+.solar {
+    margin-top: 50px;
+    text-align: center;
+}
+.custom-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Рівномірний розподіл між елементами */
+}
+
+.custom-text {
+    flex: 0.7; /* Займе всю вільну ширину відстані між елементами */
+    max-width: calc(50% - 100px); /* Максимальна ширина текстового блоку */
+    padding: 120px;
+}
+
+    .custom-text h3 {
+        color: #ca0a74;
+        margin-bottom: 40px; /* Збільшений відступ між заголовком та текстом */
+    }
+
+.custom-image {
+    flex: 1;
+    padding: 20px;
+}
+
+    .custom-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+
+.solar h3 {
+    color: #ca0a74;
+}

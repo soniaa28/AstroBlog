@@ -12,6 +12,8 @@
         public DateTime PublishedDate { get; set; }
         public string Author { get; set; }
         public bool Visible { get; set; }
+        public Guid OwnerId { get; set; }
+      
 
         // Navigation property
         public ICollection<Tag> Tags { get; set; }

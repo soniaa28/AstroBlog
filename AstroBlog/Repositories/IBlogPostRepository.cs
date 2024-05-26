@@ -10,6 +10,8 @@ namespace AstroBlog.Repositories
         Task<BlogPost?> UpdateAsync(BlogPost blogPost);
         Task<BlogPost?> DeleteAsync(Guid id);
         Task<BlogPost?> GetByUrlHandleAsync(string urlhandle);
-
+        Task<List<BlogPost>> GetBlogsByTagIdAsync(Guid id);
+        Task<ICollection<BlogPost>> GetAllMyblogsAsync(Guid userid);
+        Task<List<BlogPost>> GetBlogsByUserIdAsync(Guid id);
     }
 }

@@ -32,6 +32,7 @@ namespace AstroBlog
             builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
             builder.Services.AddScoped<IBlogPostLikesRepository, BlogPostLikesRepository>();
             builder.Services.AddScoped<IBlogPostCommentRepository, BlogPostCommentRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

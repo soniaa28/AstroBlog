@@ -72,5 +72,34 @@ namespace AstroBlog.Repositories
         {
             return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlhandle);
         }
+
+       
+        public async Task<List<BlogPost>> GetBlogsByTagIdAsync(Guid id)
+        {
+            return await astroBlogDbContext.BlogPosts
+                .Include(x => x.Tags)
+                .Where(x => x.Tags.Any(tag => tag.Id == id))
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<BlogPost>> GetAllMyblogsAsync(Guid userid)
+        {
+            return await astroBlogDbContext.BlogPosts.Include(x=>x.Tags).Include(x => x.Tags).Where(x => x.OwnerId == userid).ToListAsync();
+
+        }
+
+        public async Task<List<BlogPost>> GetBlogsByUserIdAsync(Guid id)
+        {
+
+            return await astroBlogDbContext.BlogPosts
+                .Include(x => x.Tags)
+                .Where(x => x.OwnerId == id)
+                .ToListAsync();
+        }
+
+        //public async Task<IEnumerable<BlogPost>> GetAllMyblogsAsync(Guid userid)
+        //{
+        //    return await astroBlogDbContext.BlogPosts.Where(x=>x.)Include(x => x.Tags).ToListAsync();
+        //}
     }
 }

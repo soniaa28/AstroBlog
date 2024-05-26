@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AstroBlog.Models.Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AstroBlog.Models.ViewModel
 {

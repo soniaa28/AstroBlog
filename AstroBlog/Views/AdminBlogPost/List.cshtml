@@ -1,12 +1,17 @@
 ﻿@model List<AstroBlog.Models.Domain.BlogPost>
 @{
 }
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="container">
-        <h1>All BlogPosts - Admin Functionality</h1>
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5 ">
+        <div class="container pt-5 pb-sm-4 pb-2">
+            <h4 class="inner-text-title font-weight-bold pt-5">Blog</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><i class="fas fa-angle-right mx-2"></i>Post</li>
+            </ul>
+        </div>
     </div>
-</div>
-
+</section>
 
 <div class="container py-5">
     @if (Model != null && Model.Any())

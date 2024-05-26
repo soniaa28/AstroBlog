@@ -1,34 +1,31 @@
 ﻿@model AstroBlog.Models.ViewModel.HomeViewModel
+@using System.Globalization
+
 
 @{
     ViewData["Title"] = "Home Page";
 }
-
-
-<div class="container col-xxl-8 px-4 py-5">
-    <div class="row align-items-center g-5 py-5">
-        <div class="col-12 col-lg-6">
-            <h1 class="display-5 fw-bold lh-1 mb-3">
-                Bloggie - The Dev Blog
-            </h1>
-            <p class="lead">
-                Bloggie is the gome to coding blogs covering a vast range of
-                topics like HTML, CSS, Javascript, ASP.NET, C#, Angular etc.
-                Want to read the latest dev articles? Join the bloggie app and
-                get weekly blogs in your email.
-            </p>
-        </div>
-
-        <div class="col-12 col-lg-6">
-            <img src="https://images.pexels.com/photos/57690/pexels-photo-57690.jpeg?auto=compress&cs=tinysrgb&w=600"
-                 alt="Bloggie - Dev blogs"
-                 class="d-block mx-lg-auto img-fluid" width="300" />
-        </div>
-    </div>
-</div>
-
-
-<div class="container">
+<!-- banner section -->
+<section class="w3l-main-slider" id="home">
+	<div class="banner-content">
+		<div id="demo-1"
+		     data-zs-src='["images/bannerbg1.jpg", "images/bannerbg2.jpg","images/bannerbg3.jpg", "images/bannerbg4.jpg"]'
+		     data-zs-overlay="dots">
+			<div class="demo-inner-content text-center">
+				<div class="container">
+					<div class="banner-info">
+                        <h5>Beyond Earth: Explore, Encounter, Enlighten.</h5>
+                        <h3 class="mt-2 mb-5">Discover the Universe</h3>
+                        <p>Keep up-to-date with cosmic discoveries and interact with others </p>
+						<a href="about.html" class="btn btn-style mt-4">Learn More</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- //banner section -->
+@* <div class="container">
     <div class="row justify-content-center">
         <div class="col-6 d-flex">
             @if (Model != null && Model.Tags.Any())
@@ -84,4 +81,161 @@
             }
         </div>
     </div>
+</div> *@
+<div class="solar">
+    <h3 class ="title-style text-center">Know more about Solar system</h3>
 </div>
+
+<div class="image-container">
+	<div>
+		<a  asp-area=""
+		    asp-controller="Blogs"
+		    asp-action="Index"
+		    asp-route-urlHandle="article_sun">
+            <img class="sun-image"  src="~/images/sun (1).png" alt="Image 1">
+			<div class="image-title">Sun</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="verysmall-image" src="~/images/mercury.png" alt="Image 2">
+			<div class="image-title">Mercury</div>
+		</a>
+	</div>
+	<div>
+        <a asp-area=""
+           asp-controller="Blogs"
+           asp-action="Index"
+           asp-route-urlHandle="article_venus">
+            <img class="smallmid-image"  src="~/images/venus.png" alt="Image 2">
+			<div class="image-title">Venus</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class ="medium-image" src="~/images/planet-earth.png" alt="Image 2">
+			<div class="image-title">Earth</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="small-image"  src="~/images/mars.png" alt="Image 2">
+			<div class="image-title">Mars</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+			<img class="large-image" src="~/images/jupiter.png" alt="Image 2">
+			<div class="image-title">Jupiter</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+			<img class="large-image" src="~/images/saturn.png" alt="Image 2">
+			<div class="image-title">Saturn</div>
+		</a>
+	</div>
+
+	<div>
+		<a href="#">
+            <img class="smallmid-image" src="~/images/uranus.png" alt="Image 2">
+			<div class="image-title">Uranus</div>
+		</a>
+	</div>
+	<div>
+		<a href="#">
+            <img class="small-image" src="~/images/neptune.png" alt="Image 2">
+			<div class="image-title">Neptune</div>
+		</a>
+	</div>
+	
+	<!-- Додайте більше зображень тут -->
+</div>
+<div class="custom-container">
+	<div class="custom-text">
+		<h3 class="title-style text-center">ExploreSpace News & Blogs</h3>
+        <p>This an information site dedicated to space. It offers a wide selection of news, interesting facts, analysis and blogs about space events and discoveries. Discover the exciting world of space exploration, discovery and future missions through our articles and information materials.This an information site dedicated to space. It offers a wide selection of news, interesting facts, analysis and blogs about space events and discoveries. Discover the exciting world of space exploration, discovery and future missions through our articles and information materials</p>
+	</div>
+	<div class="custom-image">
+		<img src="~/images/imghome.png" alt="Ваше зображення">
+	</div>
+</div>
+
+
+<section class="w3l-courses py-5" id="courses">
+    <div class="container py-lg-5 py-md-4 py-2">
+        <h5 class="sub-title text-center">Our blog</h5>
+        <h3 class="title-style text-center">Popular posts</h3>
+        <div class="row justify-content-center">
+            @if (Model != null && Model.BlogPosts.Any())
+            {
+                var sortedPosts = Model.BlogPosts.OrderByDescending(post => post.Likes.Count).ToList();
+
+                @for (int i = 0; i < sortedPosts.Count(); i += 3)
+                {
+                    <div class="row">
+                        @foreach (var post in sortedPosts.Skip(i).Take(3))
+                        {
+                            <div class="col-lg-4 col-md-6 item mt-5">
+                                <div class="card">
+                                    <div class="card-header p-0 position-relative">
+                                        <a href="classes.html" class="zoom d-block">
+                                            <img class="card-img-bottom d-block" src="@post.FeaturedImageUrl" alt="@post.Heading">
+                                        </a>
+                                        <div class="post-pos">
+                                            @foreach (var tag in post.Tags)
+                                            {
+                                                <a asp-area=""
+                                                   asp-controller="Blogs"
+                                                   asp-action="BlogByTag"
+                                                   asp-route-id="@tag.Id"
+                                                   class="receipe blue">@tag.Name</a>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="card-body course-details">
+                                        <div class="d-flex justify-content-start align-items-center mt-2">
+                                            <i class="bi bi-hand-thumbs-up"></i>
+                                            <span class="like-count ms-1">@post.Likes.Count</span>
+                                            <span class="author-name ms-1"> by @post.Author</span>
+                                            <span class="post-date ms-3 ms-auto">
+	                                            @post.PublishedDate.ToString("dd MMM yyyy", new CultureInfo("en-US"))
+                                            </span>
+                                        </div>
+                                        <a href="classes.html" class="course-desc mt-3 d-block text-start">
+                                            @post.Heading
+                                        </a>
+                                        <div class="course-desc">@post.ShortDescription</div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <a class="btn btn-dark btn-read-more"
+                                           asp-area=""
+                                           asp-controller="Blogs"
+                                           asp-action="Index"
+                                           asp-route-urlHandle="@post.UrlHandle">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+
+
+        <!-- pagination -->
+        <div class="pagination-wrapper mt-5 pt-lg-3 text-center">
+            <ul class="page-pagination">
+                <li><span aria-current="page" class="page-numbers current">1</span></li>
+                <li><a class="page-numbers" href="#url">2</a></li>
+                <li><a class="page-numbers" href="#url">3</a></li>
+                <li><a class="page-numbers" href="#url">...</a></li>
+                <li><a class="page-numbers" href="#url">15</a></li>
+                <li><a class="next" href="#url">Next <span class="fa fa-angle-right"></span></a></li>
+            </ul>
+        </div>
+        <!-- //pagination -->
+    
+</section>
